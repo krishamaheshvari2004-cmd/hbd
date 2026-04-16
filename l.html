@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fbc2eb, #a6c1ee);
+    background-size: 400% 400%;
+    animation: gradient 8s ease infinite;
+    overflow-x: hidden;
+}
+
+@keyframes gradient {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.screen {
+    display: none;
+    padding: 40px 20px;
+}
+
+.active {
+    display: block;
+    animation: fade 0.6s ease;
+}
+
+@keyframes fade {
+    from {opacity:0; transform: translateY(20px);}
+    to {opacity:1; transform: translateY(0);}
+}
+
+h1, h2 {
+    color: white;
+}
+
+button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 12px;
+    background: black;
+    color: white;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+    font-size: 18px;
+}
+
+.gift {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.gift:hover {
+    transform: scale(1.1);
+}
+
+img.main {
+    max-width: 90%;
+    border-radius: 20px;
+    margin-top: 20px;
+    animation: pop 0.5s ease;
+}
+
+@keyframes pop {
+    from {transform: scale(0.5);}
+    to {transform: scale(1);}
+}
+
+#letter {
+    font-size: 18px;
+    color: white;
+    max-width: 600px;
+    margin: auto;
+    white-space: pre-line;
+}
+
+.music-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+}
+</style>
+</head>
+<body>
+<audio id="music" autoplay loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+</audio>
+<!-- PASSCODE -->
+<div id="screen1" class="screen active">
+    <h1>Enter Passcode 🔐</h1>
+    <input type="password" id="pass">
+    <br>
+    <button onclick="checkPass()">Enter</button>
+</div>
+<!-- WRONG -->
+<div id="wrong" class="screen">
+    <h1>HOW DARE YOU 😤</h1>
+    <button onclick="show('screen1')">Try Again</button>
+</div>
+<!-- SUCCESS -->
+<div id="screen2" class="screen">
+    <h1>🎉 Happy Birthday ❤️</h1>
+    <button onclick="show('screen3')">Continue</button>
+</div>
+<!-- GIFTS -->
+<div id="screen3" class="screen">
+    <h2>Pick a Gift 🎁</h2>
+<img src="https://i.ibb.co/j9mpbDLF/IMG-9804.png" class="gift" onclick="openGift(1)">
+<img src="https://i.ibb.co/jP39DxVc/IMG-9805.jpg" class="gift" onclick="openGift(2)">
+<img src="https://i.ibb.co/Zpfbvn8b/IMG-9806.jpg" class="gift" onclick="openGift(3)">
+</div>
+<!-- GIFT VIEW -->
+<div id="giftScreen" class="screen">
+    <h2 id="giftTitle"></h2>
+    <img id="giftImg" class="main">
+    <p id="giftText"></p>
+    <button onclick="show('screen3')">Back</button>
+    <button onclick="show('screen4')">Next</button>
+</div>
+<!-- CAKE -->
+<div id="screen4" class="screen">
+    <h2>Make a wish 🎂</h2>
+    <button onclick="showFinal()">Blow 🎂</button>
+</div>
+<!-- FINAL -->
+<div id="final" class="screen">
+    <h1>💖 For You 💖</h1>
+    <p id="letter"></p>
+</div>
+<script>
+const correctPass = "1234";
+
+function show(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+function checkPass() {
+    const val = document.getElementById("pass").value;
+    if (val === correctPass) {
+        show("screen2");
+    } else {
+        show("wrong");
+    }
+}
+
+const gifts = {
+    1: {
+        title: "Our Memory 💕",
+        text: "This moment means everything ❤️",
+        img: "https://i.ibb.co/j9mpbDLF/IMG-9804.png"
+    },
+    2: {
+        title: "You 💌",
+        text: "You make my life better 💖",
+        img: "https://i.ibb.co/jP39DxVc/IMG-9805.jpg"
+    },
+    3: {
+        title: "Forever 💍",
+        text: "Always us ❤️",
+        img: "https://i.ibb.co/Zpfbvn8b/IMG-9806.jpg"
+    }
+};
+
+function openGift(num) {
+    const gift = gifts[num];
+    document.getElementById("giftTitle").innerText = gift.title;
+    document.getElementById("giftText").innerText = gift.text;
+    document.getElementById("giftImg").src = gift.img;
+    show("giftScreen");
+}
+
+function toggleMusic() {
+    const music = document.getElementById("music");
+    if (music.paused) music.play();
+    else music.pause();
+}
+
+function showFinal() {
+    show("final");
+    startTyping();
+    confetti();
+}
+
+const text = `Blossoming so beautifully, our bonds live 🌸
+
+Mesmerising and cherishing the moments,
+our bond lives ✨
+
+Making sad and bad decisions,
+along with lil cute arguments,
+our bond lives 💕
+
+Coming back after silly ribbing,
+with effervescent guffaw,
+our bond lives 😊
+
+Yess, we that cute couple, my love ❤️
+
+Harboring our relation every single min,
+to hone the luminescent link—
+our bond lives 💖`;
+
+let i = 0;
+function startTyping() {
+    const speed = 35;
+    function type() {
+        if (i < text.length) {
+            document.getElementById("letter").innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    type();
+}
+
+function confetti() {
+    for (let i = 0; i < 100; i++) {
+        let div = document.createElement("div");
+        div.style.position = "fixed";
+        div.style.width = "8px";
+        div.style.height = "8px";
+        div.style.background = "white";
+        div.style.top = "-10px";
+        div.style.left = Math.random() * window.innerWidth + "px";
+        div.style.opacity = Math.random();
+        div.style.transition = "2s linear";
+        document.body.appendChild(div);
+
+        setTimeout(() => {
+            div.style.top = "100vh";
+        }, 10);
+
+        setTimeout(() => {
+            div.remove();
+        }, 2000);
+    }
+}
+</script>
+</body>
+</html>
+:::
